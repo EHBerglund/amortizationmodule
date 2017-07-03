@@ -56,7 +56,7 @@
     <Compile Include="Language\Implementation\AmortizationCommandHelperImpl.cs" />
     <Compile Include="Language\Implementation\AmortizationCreateHelperImpl.cs" />
     <Compile Include="Language\TypeDefs.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="TestToTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

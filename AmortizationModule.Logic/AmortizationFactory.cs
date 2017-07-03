@@ -13,7 +13,7 @@ namespace AmortizationModule.Logic
             return new AmortizationLogicImpl();
         }
 
-        static AmortizationOutput CreateAmortizationOutput()
+        public static AmortizationOutput CreateAmortizationOutput()
         {
             return new AmortizationOutputImpl();
         }
