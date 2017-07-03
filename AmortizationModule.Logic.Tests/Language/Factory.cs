@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmortizationModule.Logic.Language.Implementation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,17 +11,17 @@ namespace AmortizationModule.Logic.Language
     {
         public static AmortizationCreateHelper CreateAmortizationCreateHelper()
         {
-            return null;
+            return new AmortizationCreateHelperImpl();
         }
 
         public static AmortizationAssertHelper CreateAmortizationAssertHelper()
         {
-            return null;
+            return new AmortizationAssertHelperImpl();
         }
 
         public static AmortizationCommandHelper CreateAmortizationCommandHelper()
         {
-            return null;
+            return new AmortizationCommandHelperImpl();
         }
     }
 }

@@ -10,12 +10,12 @@ namespace AmortizationModule.Logic
     {
         public static AmortizationLogic CreateAmortizationLogic()
         {
-            return null;
+            return new AmortizationLogicImpl();
         }
 
-        public static AmortizationOutput CreateAmortizationOutput()
+        static AmortizationOutput CreateAmortizationOutput()
         {
-            return null;
+            return new AmortizationOutputImpl();
         }
     }
 }

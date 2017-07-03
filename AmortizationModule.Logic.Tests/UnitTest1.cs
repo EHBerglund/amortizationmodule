@@ -13,8 +13,8 @@ namespace AmortizationModule.Logic
         AmortizationCreateHelper BuildHelper;
         AmortizationCommandHelper CommandHelper;
         AmortizationAssertHelper AssertHelper;
-        [ClassInitialize()]
-        public void SetupPriorToClass()
+        [TestInitialize()]
+        public void TestInitialize()
         {
             BuildHelper = Factory.CreateAmortizationCreateHelper();
             CommandHelper = Factory.CreateAmortizationCommandHelper();
@@ -56,38 +56,6 @@ namespace AmortizationModule.Logic
                     Voucher:"V-1", Quantity:10000, Rate:1, Currency:"NOK"),
 
                 BuildHelper.Transaction("30.09.2016", 68, 1, "V-2",90000,3,1,"NOK")
-            };
-
-            return Input;
-        }
-
-        private AmortizationInput SetUpSecondBond()
-        {
-            AmortizationInput Input = new AmortizationInput();
-
-            Input.UserInput = BuildHelper.CreateUserInput(PositionSeq: 1, CalculationDate: "30.06.2016");
-
-            Input.AmortizationSecurity = BuildHelper.Security(
-                SecuritySeq: 1,
-                SecurityType: 2,
-                MaturityDate: "30.09.2016",
-                Floater: true,
-                Currency: "NOK");
-
-            Input.Settings = BuildHelper.CreateSettings(
-                Method: 1,
-                OutputAggregated: true);
-
-            Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
-                { "01.01.2016",0.023},
-                { "31.03.2016",0.04},
-                { "30.06.2016",0.03}
-            });
-
-            Input.AmortizationTransactions = new List<AmortizationTransaction>(){
-                BuildHelper.Transaction("01.01.2016",4,1,"V-01",100000,1.01,1,"NOK",1),
-                BuildHelper.Transaction("30.06.2016",68,1,"V-02",10000,1,2,"NOK",1),
-                BuildHelper.Transaction("30.09.2016",68,1,"V-03",90000,1,3,"NOk",1)
             };
 
             return Input;

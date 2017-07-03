@@ -14,7 +14,6 @@ namespace AmortizationModule.Logic.Language
         AmortizationSecurity Security(int SecurityType, string MaturityDate, int SecuritySeq = 1, bool Floater=false, string Currency="NOK");
         List<InterestRate> CreateInterestRates(Dictionary<string, double> InterestRates);
         AmortizationSettings CreateSettings(int Method, bool OutputAggregated = false);
-        List<AmortizationTransaction> CreateTransactions(List<AmortizationTransaction> Transactions);
         AmortizationTransaction Transaction(string TransactionDate,int TransactionType, int Position, string Voucher, 
             double Quantity, double Rate, int TransactionSeq = 1, string Currency = "NOK", double CurrencyRate = 1);
     }

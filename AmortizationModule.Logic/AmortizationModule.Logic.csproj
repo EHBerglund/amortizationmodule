@@ -51,6 +51,8 @@
     <Compile Include="DTO\External\InterestRate.cs" />
     <Compile Include="DTO\External\UserAmortizationInput.cs" />
     <Compile Include="DTO\Internal\AmortizationInput.cs" />
+    <Compile Include="Logic\AmortizationLogicImpl.cs" />
+    <Compile Include="Logic\AmortizationOutputImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

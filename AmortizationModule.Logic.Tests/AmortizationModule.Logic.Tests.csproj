@@ -52,6 +52,9 @@
     <Compile Include="Language\AmortizationCommandHelper.cs" />
     <Compile Include="Language\AmortizationCreateHelper.cs" />
     <Compile Include="Language\Factory.cs" />
+    <Compile Include="Language\Implementation\AmortizationAssertHelperImpl.cs" />
+    <Compile Include="Language\Implementation\AmortizationCommandHelperImpl.cs" />
+    <Compile Include="Language\Implementation\AmortizationCreateHelperImpl.cs" />
     <Compile Include="Language\TypeDefs.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
