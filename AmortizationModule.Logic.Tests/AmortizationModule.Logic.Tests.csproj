@@ -58,6 +58,9 @@
     <Compile Include="Language\TypeDefs.cs" />
     <Compile Include="TestToTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestMFloat.cs" />
+    <Compile Include="UnitTestM2.cs" />
+    <Compile Include="UnitTestM1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

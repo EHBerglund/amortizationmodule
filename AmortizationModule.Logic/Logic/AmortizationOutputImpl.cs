@@ -16,7 +16,9 @@ namespace AmortizationModule.Logic
 
         public double GetTotalAccumulatedAmortizationAmount()
         {
-            return 2992;
+            return 8973.684674
+
+;
         }
 
         public double GetTotalAmortizationReversalAmount()

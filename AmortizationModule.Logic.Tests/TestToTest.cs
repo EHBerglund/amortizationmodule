@@ -8,7 +8,7 @@ using AmortizationModule.Logic.DTO.External;
 namespace AmortizationModule.Logic
 {
     [TestClass]
-    public class UnitTest1
+    public class TestSimpleBonds
     {
         AmortizationCreateHelper BuildHelper;
         AmortizationCommandHelper CommandHelper;
@@ -61,12 +61,43 @@ namespace AmortizationModule.Logic
             return Input;
         }
 
+        private AmortizationInput TestCreate()
+        {
+            AmortizationInput Input = new AmortizationInput();
+
+            Input.UserInput = BuildHelper.CreateUserInput(PositionSeq: 1, CalculationDate: "30.06.2016");
+
+            Input.AmortizationSecurity = BuildHelper.Security(
+            SecuritySeq: 1,
+            SecurityType: 2,
+            MaturityDate: "30.09.2016",
+            Floater: true,
+            Currency: "NOK");
+
+            Input.Settings = BuildHelper.CreateSettings(
+            Method: 1,
+            OutputAggregated: true);
+
+            Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
+{ "01.01.2016",0.023},
+{ "31.03.2016",0.04},
+{ "30.06.2016",0.03}});
+
+            Input.AmortizationTransactions = new List<AmortizationTransaction>(){
+BuildHelper.Transaction("01.01.2016",4,1,"V-01",100000,1.01,1,"NOK",1),
+BuildHelper.Transaction("30.06.2016",68,1,"V-02",10000,1,2,"NOK",1),
+BuildHelper.Transaction("30.09.2016",68,1,"V-03",90000,1,3,"NOK",1)};
+
+            return Input;
+        }
+
         [TestMethod]
         public void TestSimpleBond()
         {
             AmortizationInput input = SetUpSimpleBond();
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
             AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.06.2016", 2992, output);
+            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.09.2016", 2992, output);
         }
     }
 }
