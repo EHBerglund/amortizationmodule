@@ -13,5 +13,15 @@ namespace AmortizationModule.Logic.DTO.External
         public DateTime MaturityDate { get; set; }
         public bool Floater { get; set; }
         public string Currency { get; set; }
+        public bool IsIssue { get; set; }
+
+        public AmortizationSecurity()
+        {
+            SecuritySeq = 1;
+            SecurityType = 2;
+            Floater = false;
+            Currency = "NOK";
+            IsIssue = false;
+        }
     }
 }

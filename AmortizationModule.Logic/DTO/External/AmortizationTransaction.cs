@@ -17,5 +17,11 @@ namespace AmortizationModule.Logic.DTO.External
         public double Rate { get; set; }
         public string Currency { get; set; }
         public double CurrencyRate { get; set; }
+        public bool Categorized { get; set; }
+
+        public AmortizationTransaction()
+        {
+            Categorized = false;
+        }
     }
 }
