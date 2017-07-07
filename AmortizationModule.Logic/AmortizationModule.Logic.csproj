@@ -64,6 +64,8 @@
     <Compile Include="Logic\Model\PremiumDiscountLink.cs" />
     <Compile Include="Logic\Model\PurchaseInitiation.cs" />
     <Compile Include="Logic\TypeDefs.cs" />
+	<Compile Include="Logic\AmortizationCalculator.cs" />
+	<Compile Include="Logic\EffectiveRateCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
