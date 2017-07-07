@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AmortizationModule.Logic.DTO.External;
 using AmortizationModule.Logic.DTO.Internal;
 
-namespace AmortizationModule.Logic.Logic.Categorizers
+namespace AmortizationModule.Logic
 {
     public class PremiumDiscountCategorizer : LinkCategorizer
     {
@@ -14,16 +14,17 @@ namespace AmortizationModule.Logic.Logic.Categorizers
         {
         }
 
-        public void ProcessTransaction(List<AmortizationInitiation> initiations, AmortizationTransaction transaction, AmortizationInput input)
+        public List<AmortizationInitiation> ProcessTransaction(List<AmortizationInitiation> initiations, AmortizationTransaction transaction, AmortizationInput input)
         {
             if (transaction.Categorized)
-                return;
+                return initiations;
 
             if (TransactionIsPremiumDiscount(transaction))
             {
-                initiations = LinkMapper.CoupleLinkToInitiation(initiations, new PremiumDiscountLink(transaction.TransactionDate), input.Settings);
+                initiations = LinkMapper.CoupleLinkToInitiation(initiations, new PremiumDiscountLink(transaction), input.Settings);
                 transaction.Categorized = true;
             }
+            return initiations;
         }
 
         private bool TransactionIsPremiumDiscount(AmortizationTransaction transaction)

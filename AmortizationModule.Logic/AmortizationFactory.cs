@@ -17,5 +17,11 @@ namespace AmortizationModule.Logic
         {
             return new AmortizationOutputImpl();
         }
+
+        public static AmortizationCalculator CreateAmortizationCalculator()
+        {
+            EffectiveRateCalculator calculator = new EffectiveRateCalculator();
+            return calculator;
+        }
     }
 }

@@ -18,7 +18,9 @@ namespace AmortizationModule.Logic
         Issue = 40,
         Payback = 68,
         Discount = 69,
-        Premium = 70
+        Premium = 70,
+        AmortizationIncome = 117,
+        AmortizationCost = 118
     }
 
     public enum AmortizationMethodDefs

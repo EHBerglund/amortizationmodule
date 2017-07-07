@@ -16,5 +16,15 @@ namespace AmortizationModule.Logic
         {
             this.transactionDate = transactionDate;
         }
+
+        public virtual double GetPremiumDiscountAmount()
+        {
+            return 0;
+        }
+
+        public virtual double GetCashFlowAmount()
+        {
+            return 0;
+        }
     }
 }

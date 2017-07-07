@@ -14,6 +14,30 @@ namespace AmortizationModule.Logic.DTO.External
         public bool Floater { get; set; }
         public string Currency { get; set; }
         public bool IsIssue { get; set; }
+        private Dictionary<DateTime, double> instalments;
+        public Dictionary<DateTime, double> Instalments
+        {
+            get
+            {
+                return instalments == null ? new Dictionary<DateTime, double>() : instalments;
+            }
+            set
+            {
+                instalments = value;
+            }
+        }
+        private List<DateTime> interestTerms;
+        public List<DateTime> InterestTerms
+        {
+            get
+            {
+                return interestTerms == null ? new List<DateTime>() : interestTerms;
+            }
+            set
+            {
+                interestTerms = value;
+            }
+        }
 
         public AmortizationSecurity()
         {

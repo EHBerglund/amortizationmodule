@@ -11,6 +11,6 @@ namespace AmortizationModule.Logic
     public interface LinkCategorizer
     {
         void Initialize();
-        void ProcessTransaction(List<AmortizationInitiation> initiations, AmortizationTransaction transaction, AmortizationInput input);
+        List<AmortizationInitiation> ProcessTransaction(List<AmortizationInitiation> initiations, AmortizationTransaction transaction, AmortizationInput input);
     }
 }

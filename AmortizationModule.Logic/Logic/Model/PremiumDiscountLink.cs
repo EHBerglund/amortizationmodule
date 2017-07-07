@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmortizationModule.Logic.DTO.External;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace AmortizationModule.Logic
 {
     public class PremiumDiscountLink : AmortizationLink
     {
-        public PremiumDiscountLink(DateTime transactionDate)
-            : base(transactionDate)
+        public PremiumDiscountLink(AmortizationTransaction transaction)
+            : base(transaction.TransactionDate)
         {
 
         }

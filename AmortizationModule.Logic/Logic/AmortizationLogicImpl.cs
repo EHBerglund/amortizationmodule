@@ -10,31 +10,34 @@ namespace AmortizationModule.Logic
 {
     public class AmortizationLogicImpl : AmortizationLogic
     {
-        public AmortizationOutput GetAmortizationOutput(AmortizationInput input)
+        AmortizationInput input;
+
+        public AmortizationOutput GetAmortizationOutput(AmortizationInput Input)
         {
-            input = SetBasicMeasuresAndFilterIrrelevantTransactions(input);
+            this.input = Input;
+            SetBasicMeasuresAndFilterIrrelevantTransactions();
             List<AmortizationTransactionOutput> outputTransactions = GenerateAmortizationTransactionsOutput(input);
             AmortizationOutput output = new AmortizationOutputImpl();
 
             return output;
         }
 
-        private AmortizationInput SetBasicMeasuresAndFilterIrrelevantTransactions(AmortizationInput input)
+        private void SetBasicMeasuresAndFilterIrrelevantTransactions()
         {
             AmortizationFilter filter = new AmortizationFilter();
             input = filter.SetBasicMeasuresAndFilterIrrelevantTransactions(input);
-            return input;
         }
 
-        private List<AmortizationTransactionOutput> GenerateAmortizationTransactionsOutput(AmortizationInput filteredInput)
+        private List<AmortizationTransactionOutput> GenerateAmortizationTransactionsOutput()
         {
             List<AmortizationTransactionOutput> transactions = new List<AmortizationTransactionOutput>();
-            List<AmortizationInitiation> initiations = CategorizeInitiations(filteredInput);
-            initiations = CategorizeLinks(initiations, filteredInput);
+            List<AmortizationInitiation> initiations = CategorizeInitiations();
+            initiations = CategorizeLinks(initiations);
+            transactions = GenerateAmortizationOutputTransactions(initiations);
             return transactions;
         }
 
-        private List<AmortizationInitiation> CategorizeInitiations(AmortizationInput input)
+        private List<AmortizationInitiation> CategorizeInitiations()
         {
             List<AmortizationInitiation> initiations = new List<AmortizationInitiation>();
             InitiationCategorizer[] categorizers = GetInitiationCategorizerRules();
@@ -48,8 +51,16 @@ namespace AmortizationModule.Logic
             return initiations;
         }
 
-        private List<AmortizationInitiation> CategorizeLinks(List<AmortizationInitiation> initiations, AmortizationInput input)
+        private List<AmortizationInitiation> CategorizeLinks(List<AmortizationInitiation> initiations)
         {
+            LinkCategorizer[] categorizers = GetLinkCategorizerRules();
+            foreach (AmortizationTransaction transaction in input.AmortizationTransactions)
+            {
+                foreach (LinkCategorizer categorizer in categorizers)
+                {
+                    initiations = categorizer.ProcessTransaction(initiations, transaction, input);
+                }
+            }
             return initiations;
         }
 
@@ -57,7 +68,46 @@ namespace AmortizationModule.Logic
         {
             InitiationCategorizer[] categorizers = new InitiationCategorizer[1];
             categorizers[0] = new PurchaseBondCategorizer();
+            foreach (InitiationCategorizer categorizer in categorizers)
+            {
+                categorizer.Initialize();
+            }
             return categorizers;
+        }
+
+        private LinkCategorizer[] GetLinkCategorizerRules()
+        {
+            LinkCategorizer[] categorizers = new LinkCategorizer[1];
+            categorizers[0] = new PremiumDiscountCategorizer();
+            foreach (LinkCategorizer categorizer in categorizers)
+            {
+                categorizer.Initialize();
+            }
+            return categorizers;
+        }
+
+        private List<AmortizationTransactionOutput> GenerateAmortizationOutputTransactions(List<AmortizationInitiation> initiations)
+        {
+            int positionSeq = input.UserInput.PositionSeq;
+            DateTime calculationDate = input.UserInput.CalculationDate;
+            List<AmortizationTransactionOutput> output = new List<AmortizationTransactionOutput>();
+            foreach (AmortizationInitiation initiation in initiations)
+            {
+                AmortizationCalculator calculator = AmortizationFactory.CreateAmortizationCalculator();
+                calculator.Initialize(input, initiation);
+                double quantity = 1;
+                double accumulated = calculator.CalculateAccumulatedAmortization(initiation, calculationDate);
+                double rate = Math.Abs(accumulated);
+                int transactionType = accumulated > 0 ? (int)TransactionTypeDefs.AmortizationIncome : (int)TransactionTypeDefs.AmortizationCost;
+                output.Add(new AmortizationTransactionOutput()
+                    {
+                        Quantity = quantity,
+                        Rate = rate,
+                        PositionSeq = positionSeq,
+                        TransactionType = transactionType
+                    });
+            }
+            return output;
         }
     }
 }
