@@ -41,7 +41,7 @@ namespace AmortizationModule.Logic
 
 
             Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
-            { "01.01.2014",4.7}});
+            { "01.01.2014",0.047}});
 
 
 
