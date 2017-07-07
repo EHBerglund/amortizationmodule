@@ -10,5 +10,6 @@ namespace AmortizationModule.Logic.DTO.External
     {
         public int Method { get; set; }
         public bool OutputAggregated { get; set; }
+        public int InterestMethod { get; set; }
     }
 }

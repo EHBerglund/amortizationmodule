@@ -26,8 +26,8 @@ namespace AmortizationModule.Logic.DTO.External
                 instalments = value;
             }
         }
-        private List<DateTime> interestTerms;
-        public List<DateTime> InterestTerms
+        private Dictionary<DateTime, double> interestTerms;
+        public Dictionary<DateTime, double> InterestTerms
         {
             get
             {

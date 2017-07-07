@@ -23,12 +23,13 @@ namespace AmortizationModule.Logic.Language.Implementation
             return rates;
         }
 
-        public AmortizationSettings CreateSettings(int Method, bool OutputAggregated = false)
+        public AmortizationSettings CreateSettings(int Method, bool OutputAggregated = false, int interestMethod = 1)
         {
             AmortizationSettings settings = new AmortizationSettings()
             {
                 Method = Method,
-                OutputAggregated = OutputAggregated
+                OutputAggregated = OutputAggregated,
+                InterestMethod = interestMethod
             };
             return settings;
         }

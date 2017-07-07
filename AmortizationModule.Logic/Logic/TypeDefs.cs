@@ -28,4 +28,10 @@ namespace AmortizationModule.Logic
         EfficientRateMethod = 1,
         LinearMethod = 2
     }
+
+    public enum InterestMethodDefs
+    {
+        Actual365 = 1,
+        Actual360 = 2
+    }
 }
