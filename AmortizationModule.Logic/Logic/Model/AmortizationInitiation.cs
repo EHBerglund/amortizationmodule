@@ -16,9 +16,12 @@ namespace AmortizationModule.Logic
         public List<AmortizationLink> Links { get => links; set => links = value; }
         public AmortizationInitiation(AmortizationTransaction transaction)
         {
+            this.transaction = transaction;
             double premium = (1 - transaction.Rate) * transaction.Quantity;
             if (premium != 0)
                 AddLink(new PremiumDiscountLink(transaction));
+
+            AddLink(new InitiationLink(transaction));
         }
 
         public void AddLink(AmortizationLink link)
@@ -28,12 +31,12 @@ namespace AmortizationModule.Logic
             links.Add(link);
         }
 
-        public double GetTotalCost()
+        public virtual double GetPremiumDiscount()
         {
             return links.Sum(l => l.GetPremiumDiscountAmount());
         }
 
-        public double GetFaceValue()
+        public virtual double GetFaceValue()
         {
             return transaction.Quantity;
         }

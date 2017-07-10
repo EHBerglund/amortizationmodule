@@ -14,7 +14,7 @@ namespace AmortizationModule.Logic
         {
             List<int> IncludedTransactionTypes = CreateIncludedTransactionsList();
             List<AmortizationTransaction> newTransactionsList = new List<AmortizationTransaction>();
-            foreach (AmortizationTransaction transaction in input.AmortizationTransactions)
+            foreach (AmortizationTransaction transaction in input.AmortizationTransactions.OrderBy(t => t.TransactionDate))
             {
                 if (transaction.TransactionType == (int)TransactionTypeDefs.Issue)
                     input.AmortizationSecurity.IsIssue = true;
@@ -33,5 +33,6 @@ namespace AmortizationModule.Logic
                 92, 117, 118, 121
             };
         }
+
     }
 }

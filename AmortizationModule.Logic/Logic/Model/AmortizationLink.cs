@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmortizationModule.Logic.DTO.External;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,22 @@ namespace AmortizationModule.Logic
 {
     public class AmortizationLink
     {
-        private DateTime transactionDate;
+        protected AmortizationTransaction transaction;
 
-        public DateTime TransactionDate { get => transactionDate; set => transactionDate = value; }
-
-        public AmortizationLink(DateTime transactionDate)
+        public DateTime LinkDate
         {
-            this.transactionDate = transactionDate;
+            get
+            {
+                return transaction.TransactionDate;
+            }
+            set
+            {
+                this.transaction.TransactionDate = value;
+            }
+        }
+        public AmortizationLink(AmortizationTransaction transaction)
+        {
+            this.transaction = transaction;
         }
 
         public virtual double GetPremiumDiscountAmount()
@@ -23,6 +33,11 @@ namespace AmortizationModule.Logic
         }
 
         public virtual double GetCashFlowAmount()
+        {
+            return 0;
+        }
+
+        public virtual double GetInstalmentAmount()
         {
             return 0;
         }

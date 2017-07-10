@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmortizationModule.Logic.DTO.External;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,12 @@ namespace AmortizationModule.Logic
 {
     public class PurchaseInitiation : AmortizationInitiation
     {
-        public PurchaseInitiation(DateTime transactionDate)
-            : base(transactionDate)
+        public PurchaseInitiation(AmortizationTransaction transaction)
+            : base(transaction)
         {
 
         }
+
+        
     }
 }

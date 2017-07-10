@@ -16,9 +16,10 @@ namespace AmortizationModule.Logic
         {
             this.input = Input;
             SetBasicMeasuresAndFilterIrrelevantTransactions();
-            List<AmortizationTransactionOutput> outputTransactions = GenerateAmortizationTransactionsOutput(input);
+            AddFutureBondStructure();
+            List<AmortizationTransactionOutput> outputTransactions = GenerateAmortizationTransactionsOutput();
             AmortizationOutput output = new AmortizationOutputImpl();
-
+            output.AddTransactionsList(outputTransactions);
             return output;
         }
 
@@ -26,6 +27,13 @@ namespace AmortizationModule.Logic
         {
             AmortizationFilter filter = new AmortizationFilter();
             input = filter.SetBasicMeasuresAndFilterIrrelevantTransactions(input);
+        }
+
+        private void AddFutureBondStructure()
+        {
+            BondStructure structure = new BondStructure();
+            input = structure.AddInstalments(input);
+            input = structure.AddInterestTerms(input);
         }
 
         private List<AmortizationTransactionOutput> GenerateAmortizationTransactionsOutput()
@@ -77,8 +85,10 @@ namespace AmortizationModule.Logic
 
         private LinkCategorizer[] GetLinkCategorizerRules()
         {
-            LinkCategorizer[] categorizers = new LinkCategorizer[1];
+            LinkCategorizer[] categorizers = new LinkCategorizer[3];
             categorizers[0] = new PremiumDiscountCategorizer();
+            categorizers[1] = new InterestCategorizer();
+            categorizers[2] = new InstalmentCategorizer();
             foreach (LinkCategorizer categorizer in categorizers)
             {
                 categorizer.Initialize();

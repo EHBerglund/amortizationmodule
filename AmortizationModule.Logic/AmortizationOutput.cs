@@ -12,5 +12,6 @@ namespace AmortizationModule.Logic
         List<AmortizationTransactionOutput> GetListOfOutputTransactions();
         double GetTotalAccumulatedAmortizationAmount();
         double GetTotalAmortizationReversalAmount();
+        void AddTransactionsList(List<AmortizationTransactionOutput> outputTransactions);
     }
 }

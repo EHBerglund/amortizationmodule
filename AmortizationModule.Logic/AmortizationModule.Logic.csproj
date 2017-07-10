@@ -52,6 +52,9 @@
     <Compile Include="DTO\External\UserAmortizationInput.cs" />
     <Compile Include="DTO\Internal\AmortizationInput.cs" />
     <Compile Include="Logic\AmortizationFilter.cs" />
+    <Compile Include="Logic\BondStructure.cs" />
+    <Compile Include="Logic\Categorizers\InstalmentCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\InterestCategorizer.cs" />
     <Compile Include="Logic\Categorizers\PremiumDiscountCategorizer.cs" />
     <Compile Include="Logic\Categorizers\PurchaseBondCategorizer.cs" />
     <Compile Include="Logic\LinkCategorizer.cs" />
@@ -61,11 +64,15 @@
     <Compile Include="Logic\AmortizationOutputImpl.cs" />
     <Compile Include="Logic\InitiationCategorizer.cs" />
     <Compile Include="Logic\Model\AmortizationLink.cs" />
+    <Compile Include="Logic\Model\InitiationLink.cs" />
+    <Compile Include="Logic\Model\InstallmentLink.cs" />
+    <Compile Include="Logic\Model\InterestLink.cs" />
     <Compile Include="Logic\Model\PremiumDiscountLink.cs" />
     <Compile Include="Logic\Model\PurchaseInitiation.cs" />
+    <Compile Include="Logic\TransactionSetup.cs" />
     <Compile Include="Logic\TypeDefs.cs" />
-	<Compile Include="Logic\AmortizationCalculator.cs" />
-	<Compile Include="Logic\EffectiveRateCalculator.cs" />
+    <Compile Include="Logic\AmortizationCalculator.cs" />
+    <Compile Include="Logic\EffectiveRateCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

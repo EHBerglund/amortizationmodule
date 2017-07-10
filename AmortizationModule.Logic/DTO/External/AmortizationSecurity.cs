@@ -31,7 +31,7 @@ namespace AmortizationModule.Logic.DTO.External
         {
             get
             {
-                return interestTerms == null ? new List<DateTime>() : interestTerms;
+                return interestTerms == null ? new Dictionary<DateTime, double>() : interestTerms;
             }
             set
             {

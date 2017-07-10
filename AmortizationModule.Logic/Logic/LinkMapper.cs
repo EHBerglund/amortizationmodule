@@ -15,15 +15,15 @@ namespace AmortizationModule.Logic
             if (initiations.Count == 0)
                 return initiations;
             DateTime leastDate = initiations.Min(i => i.TransactionDate);
-            if (link.TransactionDate < leastDate)
+            if (link.LinkDate < leastDate)
             {
                 initiations.OrderBy(i => i.TransactionDate).FirstOrDefault().AddLink(link);
-                link.TransactionDate = leastDate;
+                link.LinkDate = leastDate;
                 return initiations;
             }
             foreach (AmortizationInitiation init in initiations.OrderBy(i => i.TransactionDate))
             {
-                if (init.TransactionDate <= link.TransactionDate)
+                if (init.TransactionDate <= link.LinkDate)
                     init.AddLink(link);
             }
             return initiations;

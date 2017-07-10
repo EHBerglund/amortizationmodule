@@ -10,26 +10,26 @@ namespace AmortizationModule.Logic
     public class EffectiveRateCalculator : AmortizationCalculator
     {
         private double IRR;
-        private double totalCost;
+        private double premiumDiscount;
         private double faceValue;
         AmortizationInput input;
 
         public void Initialize(AmortizationInput input, AmortizationInitiation initiation)
         {
             this.input = input;
-            totalCost = initiation.GetTotalCost();
             faceValue = initiation.GetFaceValue();
+            premiumDiscount = initiation.GetPremiumDiscount();
         }
         public double CalculateAccumulatedAmortization(AmortizationInitiation initiation, DateTime calculationDate)
         {
             double accumulatedAmortization = 0;
             IRR = CalculateIRR(initiation);
             double pvFutureCashFlows = 0;
-            foreach (AmortizationLink link in initiation.Links.Where(l => l.TransactionDate > calculationDate))
+            foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate > calculationDate))
             {
-                pvFutureCashFlows += CalculatePVSingleCashFlow(calculationDate, link.TransactionDate, link.GetCashFlowAmount(), IRR);
+                pvFutureCashFlows += CalculatePVSingleCashFlow(calculationDate, link.LinkDate, link.GetCashFlowAmount(), IRR);
             }
-            accumulatedAmortization = Math.Abs(pvFutureCashFlows) - Math.Abs(totalCost);
+            accumulatedAmortization = Math.Abs(pvFutureCashFlows) - Math.Abs(faceValue - premiumDiscount);
             return accumulatedAmortization;
         }
 
@@ -77,9 +77,9 @@ namespace AmortizationModule.Logic
         {
             double pv = 0;
             DateTime termDate;
-            foreach (AmortizationLink link in initiation.Links.OrderBy(l => l.TransactionDate))
+            foreach (AmortizationLink link in initiation.Links.OrderBy(l => l.LinkDate))
             {
-                termDate = link.TransactionDate < CalculationDate ? CalculationDate : link.TransactionDate;
+                termDate = link.LinkDate < CalculationDate ? CalculationDate : link.LinkDate;
                 pv += CalculatePVSingleCashFlow(CalculationDate, termDate, link.GetCashFlowAmount(), discountRate);
             }
             return pv;

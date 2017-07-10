@@ -20,7 +20,7 @@ namespace AmortizationModule.Logic
                 return;
             if (transaction.TransactionType == (int)TransactionTypeDefs.Purchase && !input.AmortizationSecurity.IsIssue)
             {
-                initiations.Add(new PurchaseInitiation(transaction.TransactionDate));
+                initiations.Add(new PurchaseInitiation(transaction));
                 transaction.Categorized = true;
             }
         }

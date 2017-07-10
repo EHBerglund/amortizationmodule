@@ -9,6 +9,7 @@ namespace AmortizationModule.Logic
 {
     public class AmortizationOutputImpl : AmortizationOutput
     {
+        private List<AmortizationTransactionOutput> outputTransactions;
         public List<AmortizationTransactionOutput> GetListOfOutputTransactions()
         {
             throw new NotImplementedException();
@@ -16,14 +17,17 @@ namespace AmortizationModule.Logic
 
         public double GetTotalAccumulatedAmortizationAmount()
         {
-            return 8973.684674
-
-;
+            return outputTransactions.Sum(t => t.Rate * t.Quantity);
         }
 
         public double GetTotalAmortizationReversalAmount()
         {
             throw new NotImplementedException();
+        }
+
+        public void AddTransactionsList(List<AmortizationTransactionOutput> outputTransactions)
+        {
+            this.outputTransactions = outputTransactions;
         }
     }
 }
