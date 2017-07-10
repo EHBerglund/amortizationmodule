@@ -15,12 +15,12 @@ namespace AmortizationModule.Logic
 
         public override double GetInstalmentAmount()
         {
-            return -TransactionSetup.QuantityEffect(transaction);
+            return -TransactionSetup.QuantityEffect(transaction)*transaction.Rate;
         }
 
         public override double GetCashFlowAmount()
         {
-            return -TransactionSetup.QuantityEffect(transaction);
+            return -TransactionSetup.QuantityEffect(transaction)*transaction.Rate;
         }
     }
 }

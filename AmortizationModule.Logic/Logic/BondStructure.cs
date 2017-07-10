@@ -93,6 +93,7 @@ namespace AmortizationModule.Logic
                                 Quantity = 1,
                                 Rate = Math.Abs(rate),
                                 TransactionType = rate > 0 ? 9 : 42,
+                                TransactionDate = term.TermDate,
                                 Position = transaction.Position,
                                 Currency = input.AmortizationSecurity.Currency,
                                 CurrencyRate = 1
