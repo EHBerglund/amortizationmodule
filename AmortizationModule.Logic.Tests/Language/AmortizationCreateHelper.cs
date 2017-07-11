@@ -13,7 +13,7 @@ namespace AmortizationModule.Logic.Language
         UserAmortizationInput CreateUserInput(string CalculationDate,int PositionSeq = 1);
         AmortizationSecurity Security(int SecurityType, string MaturityDate, int SecuritySeq = 1, bool Floater=false, string Currency="NOK");
         List<InterestRate> CreateInterestRates(Dictionary<string, double> InterestRates);
-        AmortizationSettings CreateSettings(int Method, bool OutputAggregated = false, int interestMethod = 1);
+        AmortizationSettings CreateSettings(int Method, bool OutputAggregated = false, int InterestMethod =1);
         AmortizationTransaction Transaction(string TransactionDate,int TransactionType, int Position, string Voucher, 
             double Quantity, double Rate, int TransactionSeq = 1, string Currency = "NOK", double CurrencyRate = 1);
     }

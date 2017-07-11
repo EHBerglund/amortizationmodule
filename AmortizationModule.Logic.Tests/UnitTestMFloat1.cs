@@ -8,7 +8,7 @@ using AmortizationModule.Logic.DTO.External;
 namespace AmortizationModule.Logic
 {
     [TestClass]
-    public class TestBondsFloat
+    public class TestBondsFloat1
     {
         AmortizationCreateHelper BuildHelper;
         AmortizationCommandHelper CommandHelper;
@@ -22,12 +22,12 @@ namespace AmortizationModule.Logic
         }
 
 
-        private AmortizationInput SetUpBondsFloat()
+        private AmortizationInput SetUpBondsFloat1()
         {
 
             AmortizationInput Input = new AmortizationInput();
 
-            Input.UserInput = BuildHelper.CreateUserInput(PositionSeq: 1, CalculationDate: "01.01.2018");
+            Input.UserInput = BuildHelper.CreateUserInput(PositionSeq: 1, CalculationDate: "01.01.2019");
 
             Input.AmortizationSecurity = BuildHelper.Security(
             SecuritySeq: 1,
@@ -38,7 +38,22 @@ namespace AmortizationModule.Logic
 
             Input.Settings = BuildHelper.CreateSettings(
             Method: 1,
-            OutputAggregated: true);
+            OutputAggregated: true,
+            InterestMethod:1);
+
+            Input.AmortizationSecurity.Instalments = new Dictionary<DateTime, double>() {
+                { new DateTime(2020,01,01), 1},
+            };
+
+            Input.AmortizationSecurity.InterestTerms = new Dictionary<DateTime, double> {
+                { new DateTime(2015,01,01), 0.047},
+                { new DateTime(2016,01,01), 0.047},
+                { new DateTime(2017,01,01), 0.042},
+                { new DateTime(2018,01,01), 0.042},
+                { new DateTime(2019,01,01), 0.042},
+                { new DateTime(2020,01,01), 0.042},
+            };
+
 
             Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
             { "01.01.2014",4.7},
@@ -59,11 +74,11 @@ namespace AmortizationModule.Logic
         }
 
         [TestMethod]
-        public void TestBondFloat()
+        public void TestBondFloat1()
         {
-            AmortizationInput input = SetUpBondsFloat();
+            AmortizationInput input = SetUpBondsFloat1();
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
-            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("01.01.2019", 8973.684674, output);
+            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("01.01.2019", 8973.68, output);
         }
     }
 

@@ -58,8 +58,14 @@
     <Compile Include="Language\TypeDefs.cs" />
     <Compile Include="TestToTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestLMFloat.cs" />
+    <Compile Include="UnitTestLMExtra.cs" />
+    <Compile Include="UnitTestLMShort.cs" />
+    <Compile Include="UnitTestLM.cs" />
+    <Compile Include="UnitTestMSerial.cs" />
+    <Compile Include="UnitTestMFloat2.cs" />
+    <Compile Include="UnitTestMFloat1.cs" />
     <Compile Include="RateChangeTest.cs" />
-    <Compile Include="UnitTestMFloat.cs" />
     <Compile Include="UnitTestM2.cs" />
     <Compile Include="UnitTestM1.cs" />
   </ItemGroup>
