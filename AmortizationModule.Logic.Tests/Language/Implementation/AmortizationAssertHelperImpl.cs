@@ -11,7 +11,7 @@ namespace AmortizationModule.Logic.Language.Implementation
     {
         public void VerifyOutputTotalAccumulatedAmortizationEquals(string calculationDate, double accumulatedAmortization, AmortizationOutput output)
         {
-            Assert.AreEqual(accumulatedAmortization, output.GetTotalAccumulatedAmortizationAmount());
+            Assert.AreEqual(accumulatedAmortization, output.GetTotalAccumulatedAmortizationAmount(), 5);
         }
     }
 }
