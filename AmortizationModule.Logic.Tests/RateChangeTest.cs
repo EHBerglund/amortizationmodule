@@ -37,7 +37,7 @@ namespace AmortizationModule.Logic
             Input.Settings = BuildHelper.CreateSettings(
             Method: 1,
             OutputAggregated: true,
-            interestMethod: 1);
+            InterestMethod: 1);
 
             Input.AmortizationSecurity.Instalments = new Dictionary<DateTime, double>() {
 { new DateTime(2016,12,31), 1},
