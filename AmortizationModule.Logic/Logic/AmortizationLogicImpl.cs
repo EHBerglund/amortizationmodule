@@ -41,6 +41,7 @@ namespace AmortizationModule.Logic
             List<AmortizationTransactionOutput> transactions = new List<AmortizationTransactionOutput>();
             List<AmortizationInitiation> initiations = CategorizeInitiations();
             initiations = CategorizeLinks(initiations);
+            initiations = GenerateRecalculationLinks(initiations);
             transactions = GenerateAmortizationOutputTransactions(initiations);
             return transactions;
         }
@@ -67,6 +68,32 @@ namespace AmortizationModule.Logic
                 foreach (LinkCategorizer categorizer in categorizers)
                 {
                     initiations = categorizer.ProcessTransaction(initiations, transaction, input);
+                }
+            }
+            return initiations;
+        }
+
+        private List<AmortizationInitiation> GenerateRecalculationLinks(List<AmortizationInitiation> initiations)
+        {
+            int position = input.UserInput.PositionSeq;
+            string currency = input.AmortizationSecurity.Currency;
+
+            List<InterestRate> rates = input.InterestRates;
+            foreach (InterestRate rate in rates)
+            {
+                foreach (AmortizationInitiation initiation in initiations)
+                {
+                    initiation.AddLink(new RecalculateByInterestChangeLink(new AmortizationTransaction()
+                    {
+                        Currency = currency,
+                        Position = position,
+                        Categorized = true,
+                        Quantity = 0,
+                        Rate = 0,
+                        TransactionSeq = -1,
+                        TransactionType = -1,
+                        TransactionDate = rate.Date
+                    }));
                 }
             }
             return initiations;

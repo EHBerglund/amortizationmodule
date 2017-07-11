@@ -28,10 +28,10 @@ namespace AmortizationModule.Logic
             double accumulatedAmortization = 0;
             double initialCost = -faceValue + premiumDiscount;
             DateTime lastChangeDate = initiation.TransactionDate;
-            foreach (InterestRate rateChangeDate in input.InterestRates.Where(r => r.Date < CalculationDate && r.Date > initiation.TransactionDate))
+            foreach (AmortizationLink recalculateLink in initiation.Links.Where(r => r.LinkDate < CalculationDate && r.LinkDate > initiation.TransactionDate && r.TriggerRecalculation))
             {
-                accumulatedAmortization += CalculateAccumulatedAmortizationInInterval(initiation, lastChangeDate, rateChangeDate.Date,initialCost - accumulatedAmortization, true);
-                lastChangeDate = rateChangeDate.Date;
+                accumulatedAmortization += CalculateAccumulatedAmortizationInInterval(initiation, lastChangeDate, recalculateLink.LinkDate,initialCost - accumulatedAmortization, true);
+                lastChangeDate = recalculateLink.LinkDate;
             }
             accumulatedAmortization += CalculateAccumulatedAmortizationInInterval(initiation, lastChangeDate, CalculationDate, initialCost - accumulatedAmortization, true);
             return accumulatedAmortization;

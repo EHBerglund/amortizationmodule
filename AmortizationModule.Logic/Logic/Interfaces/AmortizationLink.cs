@@ -11,6 +11,14 @@ namespace AmortizationModule.Logic
     {
         protected AmortizationTransaction transaction;
 
+        public virtual bool TriggerRecalculation
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public DateTime LinkDate
         {
             get
