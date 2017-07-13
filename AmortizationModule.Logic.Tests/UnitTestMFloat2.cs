@@ -59,11 +59,11 @@ namespace AmortizationModule.Logic
 
             Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
                     { "15.04.2014",0.055},
-                    { "18.10.2016",0.06}
+                    { "21.04.2016",0.06}
                 });
 
                 Input.AmortizationTransactions = new List<AmortizationTransaction>(){
-                    BuildHelper.Transaction("15.04.2014",4,1,"V-01",500000,1,1,"NOK",1),
+                    BuildHelper.Transaction("15.04.2014",4,1,"V-01",500000,1.02,1,"NOK",1),
                     BuildHelper.Transaction("16.10.2014",9,1,"V-02",13863.0136986301,1,2,"NOK",1),
                     BuildHelper.Transaction("11.04.2015",9,1,"V-03",13335.6164383562,1,3,"NOK",1),
                     BuildHelper.Transaction("20.10.2015",9,1,"V-04",14465.7534246575,1,4,"NOK",1),
@@ -84,7 +84,7 @@ namespace AmortizationModule.Logic
             {
                 AmortizationInput input = SetUpBondsFloat2();
                 AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
-                AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("17.04.2018", 1193.433557, output);
+                AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("17.04.2018", 8779.586253, output);
             }
     }
 
