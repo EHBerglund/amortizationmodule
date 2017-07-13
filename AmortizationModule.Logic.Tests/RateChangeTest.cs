@@ -43,16 +43,17 @@ namespace AmortizationModule.Logic
 { new DateTime(2016,12,31), 1},
 };
             Input.AmortizationSecurity.InterestTerms = new Dictionary<DateTime, double> {
-{ new DateTime(2016,03,31), 0.009863014},
-{ new DateTime(2016,06,30), 0.009972603},
-{ new DateTime(2016,09,30), 0.015123288},
-{ new DateTime(2016,12,31), 0.015123288},
-};
+                { new DateTime(2016,03,31), 0.009863014},
+                { new DateTime(2016,06,30), 0.009972603},
+                { new DateTime(2016,09,30), 0.015123288},
+                { new DateTime(2016,12,31), 0.015123288},
+            };
 
 
             Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
-{ "01.01.2016",0.04},
-{ "30.06.2016",0.06}});
+                { "01.01.2016",0.04},
+                { "30.06.2016",0.06}}
+            );
 
             Input.AmortizationTransactions = new List<AmortizationTransaction>(){
 BuildHelper.Transaction("01.01.2016",4,1,"V-01",100000,0.9,1,"NOK",1),

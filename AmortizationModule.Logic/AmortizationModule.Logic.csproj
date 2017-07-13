@@ -43,6 +43,7 @@
     <Compile Include="AmortizationFactory.cs" />
     <Compile Include="AmortizationLogic.cs" />
     <Compile Include="AmortizationOutput.cs" />
+    <Compile Include="BusinessLogic\CashFlowNotSuitableForIRRCalculation.cs" />
     <Compile Include="DTO\External\AmortizationCorrection.cs" />
     <Compile Include="DTO\External\AmortizationSecurity.cs" />
     <Compile Include="DTO\External\AmortizationSettings.cs" />
@@ -53,10 +54,18 @@
     <Compile Include="DTO\Internal\AmortizationInput.cs" />
     <Compile Include="Logic\AmortizationFilter.cs" />
     <Compile Include="Logic\BondStructure.cs" />
-    <Compile Include="Logic\Categorizers\InstalmentCategorizer.cs" />
-    <Compile Include="Logic\Categorizers\InterestCategorizer.cs" />
-    <Compile Include="Logic\Categorizers\PremiumDiscountCategorizer.cs" />
-    <Compile Include="Logic\Categorizers\PurchaseBondCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\LinkCategorizers\InstalmentCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\LinkCategorizers\InterestCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\InitiationCategorizers\IssueLoanCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\InitiationCategorizers\LoanCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\LinkCategorizers\LoanCostCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\LinkCategorizers\LoanIncomeCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\LinkCategorizers\PremiumDiscountCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\InitiationCategorizers\PurchaseBondCategorizer.cs" />
+    <Compile Include="Logic\Categorizers\LinkCategorizers\PureCashFlowCategorizer.cs" />
+    <Compile Include="Logic\EffectiveRateCalculator.cs" />
+    <Compile Include="Logic\Initiations\IssueLoanInitiation.cs" />
+    <Compile Include="Logic\Initiations\LoanInitiation.cs" />
     <Compile Include="Logic\LinkCategorizer.cs" />
     <Compile Include="Logic\LinkMapper.cs" />
     <Compile Include="Logic\Interfaces\AmortizationInitiation.cs" />
@@ -67,13 +76,16 @@
     <Compile Include="Logic\Links\InitiationLink.cs" />
     <Compile Include="Logic\Links\InstallmentLink.cs" />
     <Compile Include="Logic\Links\InterestLink.cs" />
+    <Compile Include="Logic\Links\LoanCostLink.cs" />
+    <Compile Include="Logic\Links\LoanIncomeLink.cs" />
     <Compile Include="Logic\Links\PremiumDiscountLink.cs" />
     <Compile Include="Logic\Initiations\PurchaseInitiation.cs" />
+    <Compile Include="Logic\Links\PureCashFlowLink.cs" />
     <Compile Include="Logic\Links\RecalculateByInterestChangeLink.cs" />
     <Compile Include="Logic\TransactionSetup.cs" />
     <Compile Include="Logic\TypeDefs.cs" />
     <Compile Include="Logic\AmortizationCalculator.cs" />
-    <Compile Include="Logic\EffectiveRateCalculator.cs" />
+    <Compile Include="Logic\EffectiveRateCalculatorImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

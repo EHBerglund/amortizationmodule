@@ -102,9 +102,7 @@ namespace AmortizationModule.Logic
                 BuildHelper.Transaction("30.04.2027",9,1,"V-31",270,1,31,"NOK",1),
                 BuildHelper.Transaction("30.04.2027",65,1,"V-32",100,1,32,"NOK",1)
             };
-
             return Input;
-
         }
 
         [TestMethod]
@@ -112,7 +110,7 @@ namespace AmortizationModule.Logic
         {
             AmortizationInput input = SetUpLoan1();
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
-            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.04.2022", 232.56, output);
+            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.04.2022", 1423, output);
         }
 
     }

@@ -12,6 +12,6 @@ namespace AmortizationModule.Logic
         public RecalculateByInterestChangeLink(AmortizationTransaction transaction) : base(transaction)
         {
         }
-        public override bool TriggerRecalculation => true;
+        public override bool TriggerRecalculationWithIRR => true;
     }
 }

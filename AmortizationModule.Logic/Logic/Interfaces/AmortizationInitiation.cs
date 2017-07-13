@@ -8,6 +8,8 @@ namespace AmortizationModule.Logic
     public abstract class AmortizationInitiation
     {
         private AmortizationTransaction transaction;
+        private List<int> issueTypes;
+        private List<int> purchaseTypes;
         public DateTime TransactionDate
         {
             get
@@ -40,6 +42,9 @@ namespace AmortizationModule.Logic
                 AddLink(new PremiumDiscountLink(transaction));
 
             AddLink(new InitiationLink(transaction));
+
+            issueTypes = new List<int>() { 40, 43 };
+            purchaseTypes = new List<int>() { 4, 67 };
         }
 
         public void AddLink(AmortizationLink link)
@@ -56,7 +61,11 @@ namespace AmortizationModule.Logic
 
         public virtual double GetFaceValue()
         {
-            return transaction.Quantity;
+            if (issueTypes.Contains(transaction.TransactionType))
+                return -transaction.Quantity;
+            if (purchaseTypes.Contains(transaction.TransactionType))
+                return transaction.Quantity;
+            return 0;
         }
     }
 }

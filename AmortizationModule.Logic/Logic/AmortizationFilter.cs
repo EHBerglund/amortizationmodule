@@ -30,7 +30,7 @@ namespace AmortizationModule.Logic
             return new List<int>()
             {
                 1, 2, 4, 6, 9, 11, 30, 38, 40, 41, 42, 43, 44, 63, 64, 65, 66, 67, 68,
-                92, 117, 118, 121
+                92, 116, 117, 118, 121
             };
         }
 

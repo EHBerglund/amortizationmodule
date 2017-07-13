@@ -11,7 +11,7 @@ namespace AmortizationModule.Logic
     {
         protected AmortizationTransaction transaction;
 
-        public virtual bool TriggerRecalculation
+        public virtual bool TriggerRecalculationWithIRR
         {
             get
             {

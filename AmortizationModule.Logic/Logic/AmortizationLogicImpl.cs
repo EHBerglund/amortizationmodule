@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmortizationModule.Logic.DTO.Internal;
 using AmortizationModule.Logic.DTO.External;
 
@@ -101,8 +98,10 @@ namespace AmortizationModule.Logic
 
         private InitiationCategorizer[] GetInitiationCategorizerRules()
         {
-            InitiationCategorizer[] categorizers = new InitiationCategorizer[1];
+            InitiationCategorizer[] categorizers = new InitiationCategorizer[3];
             categorizers[0] = new PurchaseBondCategorizer();
+            categorizers[1] = new LoanCategorizer();
+            categorizers[2] = new IssueLoanCategorizer();
             foreach (InitiationCategorizer categorizer in categorizers)
             {
                 categorizer.Initialize();
@@ -112,10 +111,13 @@ namespace AmortizationModule.Logic
 
         private LinkCategorizer[] GetLinkCategorizerRules()
         {
-            LinkCategorizer[] categorizers = new LinkCategorizer[3];
+            LinkCategorizer[] categorizers = new LinkCategorizer[6];
             categorizers[0] = new PremiumDiscountCategorizer();
             categorizers[1] = new InterestCategorizer();
             categorizers[2] = new InstalmentCategorizer();
+            categorizers[3] = new LoanIncomeCategorizer();
+            categorizers[4] = new LoanCostCategorizer();
+            categorizers[5] = new PureCashFlowCategorizer();
             foreach (LinkCategorizer categorizer in categorizers)
             {
                 categorizer.Initialize();
@@ -133,7 +135,7 @@ namespace AmortizationModule.Logic
                 AmortizationCalculator calculator = AmortizationFactory.CreateAmortizationCalculator();
                 calculator.Initialize(input, initiation);
                 double quantity = 1;
-                double accumulated = calculator.CalculateAccumulatedAmortization(initiation, calculationDate);
+                double accumulated = calculator.CalculateAccumulatedAmortization(calculationDate);
                 double rate = Math.Abs(accumulated);
                 int transactionType = accumulated > 0 ? (int)TransactionTypeDefs.AmortizationIncome : (int)TransactionTypeDefs.AmortizationCost;
                 output.Add(new AmortizationTransactionOutput()

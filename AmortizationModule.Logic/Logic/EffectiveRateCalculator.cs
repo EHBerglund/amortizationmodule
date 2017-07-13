@@ -4,82 +4,80 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AmortizationModule.Logic.DTO.Internal;
+using AmortizationModule.Logic.BusinessLogic;
 using AmortizationModule.Logic.DTO.External;
 
 namespace AmortizationModule.Logic
 {
     public class EffectiveRateCalculator : AmortizationCalculator
     {
-        private double IRR;
-        private double premiumDiscount;
-        private double faceValue;
-        AmortizationInput input;
-
+        private AmortizationInitiation initiation;
+        private AmortizationInput input;
+        private double initialCost;
         public void Initialize(AmortizationInput input, AmortizationInitiation initiation)
         {
             this.input = input;
-            faceValue = initiation.GetFaceValue();
-            premiumDiscount = initiation.GetPremiumDiscount();
+            this.initiation = initiation;
+            this.initialCost = -initiation.GetFaceValue() + initiation.GetPremiumDiscount();
         }
-        public double CalculateAccumulatedAmortization(AmortizationInitiation initiation, DateTime CalculationDate)
+
+        public double CalculateAccumulatedAmortization(DateTime calculationDate)
         {
-            if (!input.AmortizationSecurity.Floater)
-                return CalculateAccumulatedAmortizationInInterval(initiation, initiation.TransactionDate, CalculationDate);
-            double accumulatedAmortization = 0;
-            double initialCost = -faceValue + premiumDiscount;
-            DateTime lastChangeDate = initiation.TransactionDate;
-            foreach (AmortizationLink recalculateLink in initiation.Links.Where(r => r.LinkDate < CalculationDate && r.LinkDate > initiation.TransactionDate && r.TriggerRecalculation))
+            AmortizationParameters parameters = new AmortizationParameters();
+            parameters.CalculationDate = calculationDate;
+            parameters.CostAtCalculationDate = initialCost;
+            parameters.InitialDate = initiation.TransactionDate;
+
+            double accruedAmortization = 0;
+            foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate < calculationDate && l.LinkDate > initiation.TransactionDate).OrderBy(l => l.LinkDate))
             {
-                accumulatedAmortization += CalculateAccumulatedAmortizationInInterval(initiation, lastChangeDate, recalculateLink.LinkDate,initialCost - accumulatedAmortization, true);
-                lastChangeDate = recalculateLink.LinkDate;
+                parameters.CostAtCalculationDate += link.GetInstalmentAmount();
+                if (link.TriggerRecalculationWithIRR)
+                {
+                    parameters.CalculationDate = link.LinkDate;
+                    ReCalculateInterest(parameters.CalculationDate, input.InterestRates);
+                    accruedAmortization += RecalculateIRRAndCalculateAccumulatedAmortization(parameters);
+                    parameters.CostAtCalculationDate -= accruedAmortization;
+                    parameters.InitialDate = link.LinkDate;
+                }
             }
-            accumulatedAmortization += CalculateAccumulatedAmortizationInInterval(initiation, lastChangeDate, CalculationDate, initialCost - accumulatedAmortization, true);
-            return accumulatedAmortization;
+            parameters.CalculationDate = calculationDate;
+            ReCalculateInterest(parameters.CalculationDate, input.InterestRates);
+            accruedAmortization += RecalculateIRRAndCalculateAccumulatedAmortization(parameters);
+            return accruedAmortization;
         }
 
-        private double CalculateAccumulatedAmortizationInInterval(AmortizationInitiation initiation, DateTime fromDate, DateTime CalculationDate, double amortizedCost = 0, bool reCalculateInterest = false)
+        private double RecalculateIRRAndCalculateAccumulatedAmortization(AmortizationParameters parameters)
         {
-            if (Math.Abs(amortizedCost) < 5)
-                amortizedCost = -faceValue + premiumDiscount;
-            if (reCalculateInterest)
-                initiation = ReCalculateInterest(initiation, CalculationDate, input.InterestRates);
-
-            return CalculateAccumulatedAmortizationInInterval(initiation, fromDate, CalculationDate, amortizedCost);
+            parameters.IRR = CalculateIRR(parameters.InitialDate, parameters.CostAtCalculationDate);
+            return CalculateAmortizationInInterval(parameters);
         }
-        
-        private double CalculateAccumulatedAmortizationInInterval(AmortizationInitiation initiation,DateTime fromDate, DateTime calculationDate, double amortizedCost)
+
+        private double CalculateAccumulatedAmortizationWithExistingIRR(AmortizationParameters parameters)
         {
-            double accumulatedAmortization = 0;
-            IRR = CalculateIRR(initiation, fromDate, amortizedCost);
-            double pvFutureCashFlows = 0;
-            foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate > calculationDate))
-            {
-                pvFutureCashFlows += CalculatePVSingleCashFlow(calculationDate, link.LinkDate, link.GetCashFlowAmount(), IRR);
-            }
-            accumulatedAmortization = Math.Abs(pvFutureCashFlows) - Math.Abs(amortizedCost);
-            return accumulatedAmortization;
+            return CalculateAmortizationInInterval(parameters);
         }
 
-        private AmortizationInitiation ReCalculateInterest(AmortizationInitiation initiation, DateTime calculationDate, List<InterestRate> interestRates)
+        private AmortizationInitiation ReCalculateInterest(DateTime calculationDate, List<InterestRate> interestRates)
         {
             double quantity = 0;
             DateTime interestDate = initiation.TransactionDate;
             double accruedInterest = 0;
-            double rate = LookupRate(interestDate, interestRates);
+            double rate = LookupRate(interestDate, interestRates,calculationDate);
             InterestLink link = null;
             DateTime endDate = initiation.Links.Max(l => l.LinkDate);
             while (interestDate <= endDate)
             {
                 if (interestDate < calculationDate)
                 {
-                    rate = LookupRate(interestDate, interestRates);
+                    rate = LookupRate(interestDate, interestRates, calculationDate);
                 }
                 accruedInterest += -CalculateOneDayInterest(quantity, rate);
                 foreach (AmortizationLink termLink in initiation.Links.Where(l => l.LinkDate == interestDate))
                 {
                     quantity += termLink.GetInstalmentAmount();
                 }
-                link = (InterestLink) initiation.Links.FirstOrDefault(l => l.GetType() == typeof(InterestLink) && l.LinkDate == interestDate);
+                link = (InterestLink)initiation.Links.FirstOrDefault(l => l.GetType() == typeof(InterestLink) && l.LinkDate == interestDate);
                 if (link != null)
                 {
                     link.SetAmount(accruedInterest);
@@ -91,12 +89,12 @@ namespace AmortizationModule.Logic
             return initiation;
         }
 
-        private double LookupRate(DateTime rateDate, List<InterestRate> interestRates)
+        private double LookupRate(DateTime rateDate, List<InterestRate> interestRates, DateTime calculationDate)
         {
             double interest = interestRates.OrderBy(r => r.Date).FirstOrDefault()?.Rate ?? 0;
             foreach (InterestRate rate in interestRates.OrderBy(r => r.Date))
             {
-                if (rate.Date <= rateDate)
+                if (rate.Date <= rateDate && rate.Date < calculationDate)
                     interest = rate.Rate;
             }
             return interest;
@@ -107,50 +105,64 @@ namespace AmortizationModule.Logic
             return quantity * rate / 365;
         }
 
-        private double CalculateIRR(AmortizationInitiation initiation, DateTime CalculationDate, double amortizedCost)
+        private double CalculateIRR(DateTime CalculationDate, double InitialCost)
         {
-            double accuracy = 0.0001;
-            double highRate = 1;
-            double lowRate = -0.9;
-            double pv = double.MaxValue;
-            double midPoint = 0;
-            bool highEqualsPositive = false;
+            double highRate = IRRParameters.highRate;
+            double lowRate = IRRParameters.lowRate;
+            double midpoint = IRRParameters.midpoint;
 
-            double highPV = CalculatePV(CalculationDate, initiation, highRate, amortizedCost);
-            double lowPV = CalculatePV(CalculationDate, initiation, lowRate, amortizedCost);
+            double pv = 1;
 
-            if (highPV * lowPV >= 0)
-                return 0;
+            bool highEqualsPositive = ThrowIfNotSuitableForIRRAndDetermineIfHighRateYieldsPositiveNPV(CalculationDate, highRate, lowRate, InitialCost);
 
-            if (highPV > 0)
-                highEqualsPositive = true;
-
-            while (Math.Abs(pv) > accuracy)
+            while(Math.Abs(pv) > IRRParameters.accuracy)
             {
-                midPoint = (highRate + lowRate) / 2;
-                pv = CalculatePV(CalculationDate, initiation, midPoint, amortizedCost);
-                if ((pv>0 && highEqualsPositive) || (pv < 0 && !highEqualsPositive))
+                midpoint = (highRate + lowRate) / 2;
+                pv = CalculatePresentValueOfFutureCashFlows(CalculationDate, midpoint, InitialCost);
+                if ((pv > 0 && highEqualsPositive) || (pv<0 && !highEqualsPositive))
                 {
-                    highRate = midPoint;
+                    highRate = midpoint;
                 }
                 else
                 {
-                    lowRate = midPoint;
+                    lowRate = midpoint;
                 }
             }
-            return midPoint;
+
+            return midpoint;
         }
 
-        private double CalculatePV(DateTime CalculationDate, AmortizationInitiation initiation, double discountRate, double timeZeroValue)
+        private bool ThrowIfNotSuitableForIRRAndDetermineIfHighRateYieldsPositiveNPV(DateTime CalculationDate, double highRate, double lowRate, double InitialCost)
         {
-            double pv = timeZeroValue;
-            DateTime termDate;
-            foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate > CalculationDate).OrderBy(l => l.LinkDate))
+            double highPV = CalculatePresentValueOfFutureCashFlows(CalculationDate, highRate, InitialCost);
+            double lowPV = CalculatePresentValueOfFutureCashFlows(CalculationDate, lowRate, InitialCost);
+
+            if (CashFlowNotSuitableForIRR(highPV, lowPV))
+                throw new CashFlowNotSuitableForIRRCalculation($"High: {highPV}, Low: {lowPV}");
+
+            return highPV > 0;
+        }
+
+        private bool CashFlowNotSuitableForIRR(double highPV, double lowPV)
+        {
+            return highPV * lowPV > 0;
+        }
+
+        private double CalculateAmortizationInInterval(AmortizationParameters parameters)
+        {
+            double pvFutureCashFlows = CalculatePresentValueOfFutureCashFlows(parameters.CalculationDate, parameters.IRR);
+            double accumulatedAmortization = pvFutureCashFlows + parameters.CostAtCalculationDate;
+            return accumulatedAmortization;
+        }
+
+        private double CalculatePresentValueOfFutureCashFlows(DateTime CalculationDate, double rate, double initialValue = 0)
+        {
+            double pvFutureCashFlows = initialValue;
+            foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate > CalculationDate)) 
             {
-                termDate = link.LinkDate < CalculationDate ? CalculationDate : link.LinkDate;
-                pv += CalculatePVSingleCashFlow(CalculationDate, termDate, link.GetCashFlowAmount(), discountRate);
+                pvFutureCashFlows += CalculatePVSingleCashFlow(CalculationDate, link.LinkDate, link.GetCashFlowAmount(), rate);
             }
-            return pv;
+            return pvFutureCashFlows;
         }
 
         private double CalculatePVSingleCashFlow(DateTime CalculationDate, DateTime cfDate, double cf, double rate)
@@ -159,5 +171,22 @@ namespace AmortizationModule.Logic
             double pv = cf / (Math.Pow(1 + rate, daysGone / 365));
             return pv;
         }
+    }
+
+    class AmortizationParameters
+    {
+        public DateTime InitialDate { get; set; }
+        public DateTime CalculationDate { get; set; }
+        public double CostAtCalculationDate { get; set; }
+        public double IRR { get; set; }
+    }
+
+    class IRRParameters
+    {
+        public const double accuracy = 0.0001;
+        public const double highRate = 1;
+        public const double lowRate = -0.9;
+        public const double pv = double.MaxValue;
+        public const double midpoint = 0;
     }
 }

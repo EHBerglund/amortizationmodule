@@ -10,6 +10,6 @@ namespace AmortizationModule.Logic
     public interface AmortizationCalculator
     {
         void Initialize(AmortizationInput input, AmortizationInitiation initiation);
-        double CalculateAccumulatedAmortization(AmortizationInitiation initiation, DateTime calculationDate);
+        double CalculateAccumulatedAmortization(DateTime calculationDate);
     }
 }
