@@ -39,12 +39,12 @@ namespace AmortizationModule.Logic
             OutputAggregated: true,
             InterestMethod: 2);
 
-            Input.AmortizationSecurity.Instalments = new Dictionary<DateTime, double>() {
-                { new DateTime(2005,12,31), 0.2},
-                { new DateTime(2006,12,31), 0.2},
-                { new DateTime(2007,12,31), 0.2},
-                { new DateTime(2008,12,31), 0.2},
-                { new DateTime(2009,12,31), 0.2},
+            Input.AmortizationSecurity.Instalments = new List<Installment>() {
+                new Installment(new DateTime(2005,12,31), 0.2, new DateTime(2005,1,1)),
+                new Installment(new DateTime(2006,12,31), 0.2, new DateTime(2005,1,1)),
+                new Installment(new DateTime(2007,12,31), 0.2, new DateTime(2005,1,1)),
+                new Installment(new DateTime(2008,12,31), 0.2, new DateTime(2005,1,1)),
+                new Installment(new DateTime(2009,12,31), 0.2, new DateTime(2005,1,1)),
             };
 
             Input.AmortizationSecurity.InterestTerms = new Dictionary<DateTime, double> {

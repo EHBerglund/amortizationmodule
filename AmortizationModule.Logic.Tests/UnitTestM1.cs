@@ -42,8 +42,8 @@ namespace AmortizationModule.Logic
 
             
 
-            Input.AmortizationSecurity.Instalments = new Dictionary<DateTime, double>() {
-                { new DateTime(2015,12,03), 1},
+            Input.AmortizationSecurity.Instalments = new List<Installment>() {
+                new Installment(new DateTime(2015,12,03), 1, new DateTime(2015,1,3))
             };
 
 

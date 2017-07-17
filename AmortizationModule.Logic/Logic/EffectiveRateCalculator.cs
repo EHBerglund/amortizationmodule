@@ -44,6 +44,10 @@ namespace AmortizationModule.Logic
                     parameters.InitialCost = parameters.CostAtCalculationDate;
                     parameters.InitialDate = link.LinkDate;
                 }
+                else if (link.TriggerRecalculationWithOldIRR)
+                {
+
+                }
             }
 
             foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate == calculationDate && l.LinkDate != parameters.InitialDate))

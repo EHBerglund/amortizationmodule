@@ -49,6 +49,7 @@
     <Compile Include="DTO\External\AmortizationSettings.cs" />
     <Compile Include="DTO\External\AmortizationTransaction.cs" />
     <Compile Include="DTO\External\AmortizationTransactionOutput.cs" />
+    <Compile Include="DTO\External\Installment.cs" />
     <Compile Include="DTO\External\InterestRate.cs" />
     <Compile Include="DTO\External\UserAmortizationInput.cs" />
     <Compile Include="DTO\Internal\AmortizationInput.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Logic\Links\PremiumDiscountLink.cs" />
     <Compile Include="Logic\Initiations\PurchaseInitiation.cs" />
     <Compile Include="Logic\Links\PureCashFlowLink.cs" />
+    <Compile Include="Logic\Links\RecalculateByExtraordinaryInstallmentLink.cs" />
     <Compile Include="Logic\Links\RecalculateByInterestChangeLink.cs" />
     <Compile Include="Logic\TransactionSetup.cs" />
     <Compile Include="Logic\TypeDefs.cs" />

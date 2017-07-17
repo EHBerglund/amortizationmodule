@@ -14,12 +14,12 @@ namespace AmortizationModule.Logic.DTO.External
         public bool Floater { get; set; }
         public string Currency { get; set; }
         public bool IsIssue { get; set; }
-        private Dictionary<DateTime, double> instalments;
-        public Dictionary<DateTime, double> Instalments
+        private List<Installment> instalments;
+        public List<Installment> Instalments
         {
             get
             {
-                return instalments == null ? new Dictionary<DateTime, double>() : instalments;
+                return instalments == null ? new List<Installment>() : instalments;
             }
             set
             {

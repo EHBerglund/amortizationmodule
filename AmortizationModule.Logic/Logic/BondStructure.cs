@@ -13,15 +13,15 @@ namespace AmortizationModule.Logic
         public AmortizationInput AddInstalments(AmortizationInput input)
         {
             List<AmortizationTransaction> newTransactions = new List<AmortizationTransaction>();
-            foreach (DateTime term in input.AmortizationSecurity.Instalments.Keys)
+            foreach (Installment term in input.AmortizationSecurity.Instalments)
             {
-                AmortizationTransaction instalmentTransaction = input.AmortizationTransactions.FirstOrDefault(t => IsInstalment(t, term));
+                AmortizationTransaction instalmentTransaction = input.AmortizationTransactions.FirstOrDefault(t => IsInstalment(t, term.InstallmentDate));
                 if (instalmentTransaction == null)
                 {
-                    double faceValue = input.AmortizationTransactions.Where(t => t.TransactionDate < term && IsFaceValueChangeTransaction(t)).Sum(t => TransactionSetup.QuantityEffect(t));
+                    double faceValue = input.AmortizationTransactions.Where(t => t.TransactionDate < term.InstallmentDate && IsFaceValueChangeTransaction(t)).Sum(t => TransactionSetup.QuantityEffect(t));
                     if (faceValue != 0)
                     {
-                        double rate = faceValue * input.AmortizationSecurity.Instalments[term];
+                        double rate = faceValue * term.InstallmentFactor;
                         instalmentTransaction = new AmortizationTransaction()
                         {
                             Quantity = 1,
@@ -30,7 +30,7 @@ namespace AmortizationModule.Logic
                             Currency = input.AmortizationSecurity.Currency,
                             CurrencyRate = 1,
                             Position = input.UserInput.PositionSeq,
-                            TransactionDate = term,
+                            TransactionDate = term.InstallmentDate,
                             TransactionSeq = -1
                         };
                         newTransactions.Add(instalmentTransaction);

@@ -19,6 +19,14 @@ namespace AmortizationModule.Logic
             }
         }
 
+        public virtual bool TriggerRecalculationWithOldIRR
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public DateTime LinkDate
         {
             get

@@ -40,23 +40,23 @@ namespace AmortizationModule.Logic
             OutputAggregated: true,
             InterestMethod: 1);
 
-            Input.AmortizationSecurity.Instalments = new Dictionary<DateTime, double>() {
-                { new DateTime(2017,07,15), 0.0625},
-                { new DateTime(2018,01,15), 0.0625},
-                { new DateTime(2018,07,15), 0.0625},
-                { new DateTime(2019,01,15), 0.0625},
-                { new DateTime(2019,07,15), 0.0625},
-                { new DateTime(2020,01,15), 0.0625},
-                { new DateTime(2020,07,15), 0.0625},
-                { new DateTime(2021,01,15), 0.0625},
-                { new DateTime(2021,07,15), 0.0625},
-                { new DateTime(2022,01,15), 0.0625},
-                { new DateTime(2022,07,15), 0.0625},
-                { new DateTime(2023,01,15), 0.0625},
-                { new DateTime(2023,07,15), 0.0625},
-                { new DateTime(2024,01,15), 0.0625},
-                { new DateTime(2024,07,15), 0.0625},
-                { new DateTime(2025,01,15), 0.0625},
+            Input.AmortizationSecurity.Instalments = new List<Installment>() {
+                new Installment(new DateTime(2017,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2018,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2018,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2019,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2019,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2020,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2020,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2021,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2021,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2022,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2022,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2023,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2023,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2024,01,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2024,07,15), 0.0625, new DateTime(2017,1,15)),
+                new Installment(new DateTime(2025,01,15), 0.0625, new DateTime(2017,1,15))
             };
 
             Input.AmortizationSecurity.InterestTerms = new Dictionary<DateTime, double> {

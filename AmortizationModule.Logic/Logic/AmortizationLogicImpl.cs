@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AmortizationModule.Logic.DTO.Internal;
 using AmortizationModule.Logic.DTO.External;
+using System.Linq;
 
 namespace AmortizationModule.Logic
 {
@@ -39,8 +40,29 @@ namespace AmortizationModule.Logic
             List<AmortizationInitiation> initiations = CategorizeInitiations();
             initiations = CategorizeLinks(initiations);
             initiations = GenerateRecalculationLinks(initiations);
+            initiations = GenerateRecalculationLinksWithoutIRR(initiations);
             transactions = GenerateAmortizationOutputTransactions(initiations);
             return transactions;
+        }
+
+        private List<AmortizationInitiation> GenerateRecalculationLinksWithoutIRR(List<AmortizationInitiation> initiations)
+        {
+            List<DateTime> addedRecalculations = new List<DateTime>();
+            foreach (AmortizationInitiation initiation in initiations)
+            {
+                foreach (Installment installment in input.AmortizationSecurity.Instalments.Where(i => i.RegisteredDate > initiation.TransactionDate).OrderBy(i=> i.RegisteredDate))
+                {
+                    if (!addedRecalculations.Contains(installment.InstallmentDate))
+                    {
+                        initiation.AddLink(new RecalculateByExtraordinaryInstallmentLink(new AmortizationTransaction()
+                        {
+                            TransactionDate = installment.InstallmentDate,
+                        }));
+                        addedRecalculations.Add(installment.InstallmentDate);
+                    }
+                }
+            }
+            return initiations;
         }
 
         private List<AmortizationInitiation> CategorizeInitiations()
