@@ -81,14 +81,11 @@ namespace AmortizationModule.Logic
                 BuildHelper.Transaction("31.12.2009",9,1,"V-15",1226.666667,1,15,"NOK",1),
                 BuildHelper.Transaction("31.12.2009",68,1,"V-16",20000,1,16,"NOK",1)
             };
-
             return Input;
-
         }
 
         [TestMethod]
         public void TestBondSerial()
-
         {
             AmortizationInput input = SetUpBondsSerial();
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);

@@ -58,7 +58,6 @@ namespace AmortizationModule.Logic
                 { new DateTime(2018,02,01), 0.00272488584474886},
             };
 
-
             Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
                 { "01.08.2017",0.055}});
 

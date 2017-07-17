@@ -27,8 +27,10 @@ namespace AmortizationModule.Logic
             parameters.CalculationDate = calculationDate;
             parameters.CostAtCalculationDate = initialCost;
             parameters.InitialDate = initiation.TransactionDate;
+            parameters.InitialCost = initialCost;
 
             double accruedAmortization = 0;
+            double calculatedAmortization = 0;
             foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate < calculationDate && l.LinkDate > initiation.TransactionDate).OrderBy(l => l.LinkDate))
             {
                 parameters.CostAtCalculationDate += link.GetInstalmentAmount();
@@ -36,20 +38,28 @@ namespace AmortizationModule.Logic
                 {
                     parameters.CalculationDate = link.LinkDate;
                     ReCalculateInterest(parameters.CalculationDate, input.InterestRates);
-                    accruedAmortization += RecalculateIRRAndCalculateAccumulatedAmortization(parameters);
-                    parameters.CostAtCalculationDate -= accruedAmortization;
+                    calculatedAmortization = RecalculateIRRAndCalculateAccumulatedAmortization(parameters);
+                    accruedAmortization += calculatedAmortization;
+                    parameters.CostAtCalculationDate -= calculatedAmortization;
+                    parameters.InitialCost = parameters.CostAtCalculationDate;
                     parameters.InitialDate = link.LinkDate;
                 }
             }
+
+            foreach (AmortizationLink link in initiation.Links.Where(l => l.LinkDate == calculationDate && l.LinkDate != parameters.InitialDate))
+            {
+                parameters.CostAtCalculationDate += link.GetInstalmentAmount();
+            }
             parameters.CalculationDate = calculationDate;
             ReCalculateInterest(parameters.CalculationDate, input.InterestRates);
-            accruedAmortization += RecalculateIRRAndCalculateAccumulatedAmortization(parameters);
+            calculatedAmortization = RecalculateIRRAndCalculateAccumulatedAmortization(parameters);
+            accruedAmortization += calculatedAmortization;
             return accruedAmortization;
         }
 
         private double RecalculateIRRAndCalculateAccumulatedAmortization(AmortizationParameters parameters)
         {
-            parameters.IRR = CalculateIRR(parameters.InitialDate, parameters.CostAtCalculationDate);
+            parameters.IRR = CalculateIRR(parameters.InitialDate, parameters.InitialCost);
             return CalculateAmortizationInInterval(parameters);
         }
 
@@ -177,6 +187,7 @@ namespace AmortizationModule.Logic
     {
         public DateTime InitialDate { get; set; }
         public DateTime CalculationDate { get; set; }
+        public double InitialCost { get; set; }
         public double CostAtCalculationDate { get; set; }
         public double IRR { get; set; }
     }

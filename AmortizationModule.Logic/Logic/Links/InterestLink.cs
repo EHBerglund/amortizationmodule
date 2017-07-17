@@ -43,5 +43,10 @@ namespace AmortizationModule.Logic
         {
             Amount = CurrentAmount;
         }
+
+        public override string ToString()
+        {
+            return $"Date: {transaction.TransactionDate.ToShortDateString()} - Amount: {Amount}"; ;
+        }
     }
 }

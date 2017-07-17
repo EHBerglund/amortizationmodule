@@ -112,7 +112,6 @@ namespace AmortizationModule.Logic
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
             AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.04.2022", 1630.39, output);
         }
-
     }
 
 }
