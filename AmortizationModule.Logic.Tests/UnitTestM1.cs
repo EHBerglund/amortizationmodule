@@ -49,7 +49,7 @@ namespace AmortizationModule.Logic
 
             Input.AmortizationSecurity.InterestTerms = new Dictionary<DateTime, double>
             {
-                { new DateTime(2015,03,02), 0.00155},
+                { new DateTime(2015,02,03), 0.00155},
                 { new DateTime(2015,03,05), 0.0015},
                 { new DateTime(2015,04,06), 0.0016},
                 { new DateTime(2015,05,02), 0.0013},
