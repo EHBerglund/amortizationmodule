@@ -110,7 +110,7 @@ namespace AmortizationModule.Logic
         {
             AmortizationInput input = SetUpLoan1();
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
-            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.04.2022", 1630.39, output);
+            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("30.04.2022", 1424, output);
         }
     }
 

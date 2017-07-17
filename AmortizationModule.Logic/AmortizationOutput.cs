@@ -10,8 +10,9 @@ namespace AmortizationModule.Logic
     public interface AmortizationOutput
     {
         List<AmortizationTransactionOutput> GetListOfOutputTransactions();
-        double GetTotalAccumulatedAmortizationAmount();
         double GetTotalAmortizationReversalAmount();
         void AddTransactionsList(List<AmortizationTransactionOutput> outputTransactions);
+
+        AmortizationTransactionOutput GetAccumulatedOutputTransaction();
     }
 }

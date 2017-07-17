@@ -84,7 +84,7 @@ namespace AmortizationModule.Logic
             {
                 AmortizationInput input = SetUpBondsFloat2();
                 AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
-                AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("17.04.2018", 8779.586253, output);
+                AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("17.04.2018", -8779.586253, output);
             }
     }
 

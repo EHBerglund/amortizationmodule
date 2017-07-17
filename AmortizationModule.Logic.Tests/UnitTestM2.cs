@@ -67,8 +67,6 @@ namespace AmortizationModule.Logic
             BuildHelper.Transaction("01.01.2019",9,1,"V-06",58750,1,6,"NOK",1),
             BuildHelper.Transaction("01.01.2020",9,1,"V-07",58750,1,7,"NOK",1),
             BuildHelper.Transaction("01.01.2020",68,1,"V-08",1250000,1,8,"NOK",1)};
-
-
             return Input;
         }
 

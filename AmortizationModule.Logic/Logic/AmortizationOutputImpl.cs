@@ -15,11 +15,6 @@ namespace AmortizationModule.Logic
             throw new NotImplementedException();
         }
 
-        public double GetTotalAccumulatedAmortizationAmount()
-        {
-            return outputTransactions.Sum(t => t.Rate * t.Quantity);
-        }
-
         public double GetTotalAmortizationReversalAmount()
         {
             throw new NotImplementedException();
@@ -28,6 +23,19 @@ namespace AmortizationModule.Logic
         public void AddTransactionsList(List<AmortizationTransactionOutput> outputTransactions)
         {
             this.outputTransactions = outputTransactions;
+        }
+
+        public AmortizationTransactionOutput GetAccumulatedOutputTransaction()
+        {
+            double positiveSum = outputTransactions.Where(t => t.TransactionType == (int)TransactionTypeDefs.AmortizationIncome).Sum(t => t.Rate * t.Quantity);
+            double negativeSum = outputTransactions.Where(t => t.TransactionType == (int)TransactionTypeDefs.AmortizationCost).Sum(t => t.Rate * t.Quantity);
+            return new AmortizationTransactionOutput()
+            {
+                PositionSeq = outputTransactions.FirstOrDefault().PositionSeq,
+                Quantity = 1,
+                Rate = Math.Abs(positiveSum - negativeSum),
+                TransactionType = positiveSum > negativeSum ? (int)TransactionTypeDefs.AmortizationIncome : (int)TransactionTypeDefs.AmortizationCost
+            };
         }
     }
 }

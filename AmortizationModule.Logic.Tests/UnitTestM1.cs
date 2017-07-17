@@ -60,7 +60,6 @@ namespace AmortizationModule.Logic
                 { new DateTime(2015,10,04), 0.0015},
                 { new DateTime(2015,11,03), 0.0015},
                 { new DateTime(2015,12,03), 0.0015},
-
             };
 
             Input.InterestRates = BuildHelper.CreateInterestRates(new Dictionary<string, double>(){
@@ -83,7 +82,6 @@ namespace AmortizationModule.Logic
                 BuildHelper.Transaction("03.12.2015",68,1,"V-13",180000000,1,13,"NOK",1)
             };
 
-
             return Input;
 
         }
@@ -93,7 +91,7 @@ namespace AmortizationModule.Logic
         {
             AmortizationInput input = SetUpSimpleBond2();
             AmortizationOutput output = CommandHelper.GenerateAmortizationOutput(input);
-            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("04.09.2015", 7231901, output);
+            AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("04.09.2015", 7232133, output);
         }
 
     }
