@@ -58,6 +58,7 @@
     <Compile Include="Language\TypeDefs.cs" />
     <Compile Include="TestToTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestMSantander.cs" />
     <Compile Include="UnitTestMFloat3.cs" />
     <Compile Include="UnitTestLMFloat.cs" />
     <Compile Include="UnitTestLMExtra.cs" />
