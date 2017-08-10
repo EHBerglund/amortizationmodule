@@ -22,6 +22,22 @@ namespace AmortizationModule.Logic
             }
         }
 
+        public string Currency
+        {
+            get
+            {
+                return transaction.Currency;
+            }
+        }
+
+        public double CurrencyRate
+        {
+            get
+            {
+                return transaction.CurrencyRate;
+            }
+        }
+
         private List<AmortizationLink> links;
         public List<AmortizationLink> Links
         {

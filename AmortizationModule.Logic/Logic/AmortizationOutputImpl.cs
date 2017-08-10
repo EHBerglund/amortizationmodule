@@ -29,12 +29,15 @@ namespace AmortizationModule.Logic
         {
             double positiveSum = outputTransactions.Where(t => t.TransactionType == (int)TransactionTypeDefs.AmortizationIncome).Sum(t => t.Rate * t.Quantity);
             double negativeSum = outputTransactions.Where(t => t.TransactionType == (int)TransactionTypeDefs.AmortizationCost).Sum(t => t.Rate * t.Quantity);
+            double meanCurrencyRate = outputTransactions.Sum(t => t.Quantity * t.Rate) / outputTransactions.Sum(t => t.Quantity * t.Rate * t.CurrencyRate);
             return new AmortizationTransactionOutput()
             {
                 PositionSeq = outputTransactions.FirstOrDefault().PositionSeq,
                 Quantity = 1,
                 Rate = Math.Abs(positiveSum - negativeSum),
-                TransactionType = positiveSum > negativeSum ? (int)TransactionTypeDefs.AmortizationIncome : (int)TransactionTypeDefs.AmortizationCost
+                TransactionType = positiveSum > negativeSum ? (int)TransactionTypeDefs.AmortizationIncome : (int)TransactionTypeDefs.AmortizationCost,
+                Currency = outputTransactions.FirstOrDefault().Currency,
+                CurrencyRate = meanCurrencyRate
             };
         }
     }

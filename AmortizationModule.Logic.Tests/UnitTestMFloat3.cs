@@ -85,10 +85,7 @@ namespace AmortizationModule.Logic
                 BuildHelper.Transaction("01.02.2017", 9, 1, "V-13", 8021.917808, 1,13,"NOK", 1),
                 BuildHelper.Transaction("01.02.2017", 68, 1, "V-14", 100000, 1,14,"NOK", 1),
             };
-
             return Input;
-
-
         }
      
         [TestMethod]

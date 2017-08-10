@@ -165,7 +165,9 @@ namespace AmortizationModule.Logic
                         Quantity = quantity,
                         Rate = rate,
                         PositionSeq = positionSeq,
-                        TransactionType = transactionType
+                        TransactionType = transactionType,
+                        Currency = initiation.Currency,
+                        CurrencyRate = initiation.CurrencyRate
                     });
             }
             return output;

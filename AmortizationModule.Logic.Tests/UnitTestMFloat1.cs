@@ -34,7 +34,7 @@ namespace AmortizationModule.Logic
             SecurityType: 2,
             MaturityDate: "01.01.2020",
             Floater: true,
-            Currency: "NOK");
+            Currency: "USD");
 
             Input.Settings = BuildHelper.CreateSettings(
             Method: 1,
@@ -61,14 +61,14 @@ namespace AmortizationModule.Logic
 
             Input.AmortizationTransactions = new List<AmortizationTransaction>()
             {
-                BuildHelper.Transaction("01.01.2014",4,1,"V-01",1250000,0.96,1,"NOK",1),
-                BuildHelper.Transaction("01.01.2015",9,1,"V-02",58750,1,2,"NOK",1),
-                BuildHelper.Transaction("01.01.2016",9,1,"V-03",58750,1,3,"NOK",1),
-                BuildHelper.Transaction("01.01.2017",9,1,"V-04",52643.83562,1,4,"NOK",1),
-                BuildHelper.Transaction("01.01.2018",9,1,"V-05",52500,1,5,"NOK",1),
-                BuildHelper.Transaction("01.01.2019",9,1,"V-06",52500,1,6,"NOK",1),
-                BuildHelper.Transaction("01.01.2020",9,1,"V-07",52500,1,7,"NOK",1),
-                BuildHelper.Transaction("01.01.2020",68,1,"V-08",1250000,1,8,"NOK",1)
+                BuildHelper.Transaction("01.01.2014",4,1,"V-01",1250000,0.96,1,"USD",5),
+                BuildHelper.Transaction("01.01.2015",9,1,"V-02",58750,1,2,"USD",5),
+                BuildHelper.Transaction("01.01.2016",9,1,"V-03",58750,1,3,"USD",5),
+                BuildHelper.Transaction("01.01.2017",9,1,"V-04",52643.83562,1,4,"USD",5),
+                BuildHelper.Transaction("01.01.2018",9,1,"V-05",52500,1,5,"USD",5),
+                BuildHelper.Transaction("01.01.2019",9,1,"V-06",52500,1,6,"USD",5),
+                BuildHelper.Transaction("01.01.2020",9,1,"V-07",52500,1,7,"USD",5),
+                BuildHelper.Transaction("01.01.2020",68,1,"V-08",1250000,1,8,"USD",5)
             };
 
             return Input;
@@ -82,6 +82,5 @@ namespace AmortizationModule.Logic
             AssertHelper.VerifyOutputTotalAccumulatedAmortizationEquals("01.01.2019", 40582.68492, output);
         }
     }
-
 }
 

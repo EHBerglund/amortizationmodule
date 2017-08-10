@@ -46,7 +46,6 @@ namespace AmortizationModule.Logic
                 }
                 else if (link.TriggerRecalculationWithOldIRR)
                 {
-
                 }
             }
 
